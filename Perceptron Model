@@ -1,0 +1,183 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Copy of Untitled9.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyNap7Hnpus4hvYQkAaRRvCu",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/shreya16sharma/Machine-Learning/blob/main/Perceptron%20Model\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "dAbJxuhxqeW0"
+      },
+      "outputs": [],
+      "source": [
+        "import numpy as np"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class Perceptron(object):\n",
+        "    \"\"\"Implements a perceptron network\"\"\"\n",
+        "    def __init__(self, input_size, lr=1, epochs=100):\n",
+        "        self.W = np.zeros(input_size+1)\n",
+        "        # add one for bias\n",
+        "        self.epochs = epochs\n",
+        "        self.lr = lr\n",
+        "        self.loss_lst = []\n",
+        "    \n",
+        "    def activation_fn(self, x):\n",
+        "        #return (x >= 0).astype(np.float32)\n",
+        "        return 1 if x >= 0 else 0\n",
+        " \n",
+        "    def predict(self, x):\n",
+        "        z = self.W.T.dot(x)\n",
+        "        a = self.activation_fn(z)\n",
+        "        return a\n",
+        " \n",
+        "    def fit(self, X, d):\n",
+        "        for _ in range(self.epochs):\n",
+        "            for i in range(d.shape[0]):\n",
+        "                x = np.insert(X[i], 0, 1)\n",
+        "                y = self.predict(x)\n",
+        "                e = d[i] - y\n",
+        "                self.W = self.W + self.lr * e * x\n",
+        "            self.loss_lst.append(e)"
+      ],
+      "metadata": {
+        "id": "EmY9Wcleqi9b"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# OR GATE EXAMPLE\n",
+        "if __name__ == '__main__':\n",
+        "    X = np.array([\n",
+        "        [0, 0],\n",
+        "        [0, 1],\n",
+        "        [1, 0],\n",
+        "        [1, 1]\n",
+        "    ])\n",
+        "    d = np.array([0, 1, 1, 1])\n",
+        " \n",
+        "    perceptron = Perceptron(input_size=2)\n",
+        "    perceptron.fit(X, d)\n",
+        "    print(perceptron.W)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "RUx4flmKqlch",
+        "outputId": "5e56045d-8c3b-492e-81b9-fa1b281aa564"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[-1.  1.  1.]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# AND GATE EXAMPLE\n",
+        "if __name__ == '__main__':\n",
+        "    X = np.array([\n",
+        "        [0, 0],\n",
+        "        [0, 1],\n",
+        "        [1, 0],\n",
+        "        [1, 1]\n",
+        "    ])\n",
+        "    d = np.array([0, 0, 0, 1])\n",
+        " \n",
+        "    perceptron = Perceptron(input_size=2)\n",
+        "    perceptron.fit(X, d)\n",
+        "    print(perceptron.W)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "l53IjG0Oqm6h",
+        "outputId": "993003ff-fa98-40fb-c654-64bd825afb42"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[-3.  2.  1.]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# XOR GATE EXAMPLE\n",
+        "if __name__ == '__main__':\n",
+        "    X = np.array([\n",
+        "        [0, 0],\n",
+        "        [0, 1],\n",
+        "        [1, 0],\n",
+        "        [1, 1]\n",
+        "    ])\n",
+        "    d = np.array([0, 1, 1, 0])\n",
+        " \n",
+        "    perceptron = Perceptron(input_size=2)\n",
+        "    perceptron.fit(X, d)\n",
+        "    print(perceptron.W)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "zFQKfk0nqsOL",
+        "outputId": "fd8d1fa0-7a4a-4154-c223-d646f92a7fbd"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "[ 0. -1.  0.]\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
